@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -12,27 +13,44 @@ import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
 
 const Index = () => {
+  const [heroVideoReady, setHeroVideoReady] = useState(false);
+
   return (
     <main>
       {/* Hero Section with Video Background */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 bg-foreground">
+          {/* Poster layer (prevents refresh flash) */}
+          <div
+            className={`absolute inset-0 transition-opacity duration-700 ${
+              heroVideoReady ? "opacity-0" : "opacity-100"
+            }`}
+          >
+            <img
+              src={lookbook1}
+              alt="MISSIL – filmowy kadr kolekcji"
+              className="w-full h-full object-cover"
+              loading="eager"
+            />
+          </div>
+
           <video
             autoPlay
             muted
             loop
             playsInline
             preload="auto"
-            className="w-full h-full object-cover"
+            onCanPlay={() => setHeroVideoReady(true)}
+            className={`w-full h-full object-cover transition-opacity duration-700 ${
+              heroVideoReady ? "opacity-100" : "opacity-0"
+            }`}
             poster={lookbook1}
           >
-            {/* Fashion runway video from Pexels */}
             <source
               src="https://videos.pexels.com/video-files/5699766/5699766-hd_1920_1080_30fps.mp4"
               type="video/mp4"
             />
-            {/* Fallback */}
             <source
               src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4"
               type="video/mp4"
