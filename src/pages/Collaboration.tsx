@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import lookbook3 from "@/assets/lookbook-3.jpg";
 
 const Collaboration = () => {
   const { toast } = useToast();
@@ -208,15 +207,6 @@ const Collaboration = () => {
         </div>
       </section>
 
-      {/* Image Banner */}
-      <section className="relative h-[50vh] overflow-hidden">
-        <img
-          src={lookbook3}
-          alt="ATELIER Partnership"
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-foreground/30" />
-      </section>
     </main>
   );
 };
