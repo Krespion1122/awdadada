@@ -8,7 +8,7 @@ export function Footer() {
           {/* Brand */}
           <div className="md:col-span-2">
             <h3 className="font-display text-2xl tracking-[0.3em] uppercase mb-6">
-              ATELIER
+              MISSIL
             </h3>
             <p className="text-background/70 text-sm leading-relaxed max-w-md">
               Ekskluzywna marka odzieżowa łącząca ponadczasową elegancję z nowoczesnym 
@@ -46,7 +46,7 @@ export function Footer() {
               Kontakt
             </h4>
             <ul className="space-y-3 text-sm text-background/70">
-              <li>kontakt@atelier.pl</li>
+              <li>kontakt@missil.pl</li>
               <li>+48 22 123 45 67</li>
               <li>
                 ul. Mokotowska 12<br />
@@ -58,7 +58,7 @@ export function Footer() {
 
         <div className="border-t border-background/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-background/50">
-            © 2024 ATELIER. Wszystkie prawa zastrzeżone.
+            © 2024 MISSIL. Wszystkie prawa zastrzeżone.
           </p>
           <div className="flex gap-6 text-xs text-background/50">
             <Link to="/polityka-prywatnosci" className="hover:text-background transition-colors">
