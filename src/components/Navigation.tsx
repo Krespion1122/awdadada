@@ -51,7 +51,7 @@ export function Navigation() {
                 isScrolled || !isHomePage ? "text-foreground" : "text-background"
               )}
             >
-              ATELIER
+              MISSIL
             </Link>
 
             {/* Desktop Navigation */}

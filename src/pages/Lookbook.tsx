@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import lookbook1 from "@/assets/lookbook-1.jpg";
@@ -38,12 +39,22 @@ const Lookbook = () => {
       {/* Hero */}
       <section className="py-16 lg:py-24 bg-background">
         <div className="container mx-auto px-6 lg:px-12 text-center">
-          <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4 animate-fade-up">
+          <motion.p
+            className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+          >
             Kolekcja Jesień/Zima 2024
-          </p>
-          <h1 className="font-display text-4xl lg:text-6xl text-foreground animate-fade-up delay-100">
+          </motion.p>
+          <motion.h1
+            className="font-display text-4xl lg:text-6xl text-foreground"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
+          >
             Lookbook
-          </h1>
+          </motion.h1>
         </div>
       </section>
 
@@ -52,7 +63,7 @@ const Lookbook = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 lg:gap-8">
             {lookbookImages.map((image, index) => (
-              <div
+              <motion.div
                 key={index}
                 className={cn(
                   "group relative cursor-pointer overflow-hidden",
@@ -60,13 +71,22 @@ const Lookbook = () => {
                   index !== 0 && "aspect-[3/4]"
                 )}
                 onClick={() => openLightbox(index)}
+                initial={{ opacity: 0, y: 50 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ scale: 1.02 }}
               >
                 <img
                   src={image.src}
                   alt={image.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                 />
-                <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-500" />
+                <motion.div
+                  className="absolute inset-0 bg-foreground/0"
+                  whileHover={{ backgroundColor: "rgba(0,0,0,0.3)" }}
+                  transition={{ duration: 0.5 }}
+                />
                 <div className="absolute bottom-6 left-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
                   <p className="text-xs tracking-[0.2em] uppercase text-background/70 mb-1">
                     {image.season}
@@ -75,73 +95,109 @@ const Lookbook = () => {
                     {image.title}
                   </h3>
                 </div>
-              </div>
+                {/* Corner accents on hover */}
+                <motion.div
+                  className="absolute top-4 left-4 w-8 h-8 border-l-2 border-t-2 border-background/0"
+                  whileHover={{ borderColor: "rgba(255,255,255,0.5)" }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.div
+                  className="absolute bottom-4 right-4 w-8 h-8 border-r-2 border-b-2 border-background/0"
+                  whileHover={{ borderColor: "rgba(255,255,255,0.5)" }}
+                  transition={{ duration: 0.3 }}
+                />
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
       {/* Lightbox */}
-      {selectedImage !== null && (
-        <div className="fixed inset-0 z-50 bg-foreground/95 flex items-center justify-center animate-fade-in">
-          <button
-            onClick={closeLightbox}
-            className="absolute top-6 right-6 text-background/70 hover:text-background transition-colors"
-            aria-label="Close"
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div
+            className="fixed inset-0 z-50 bg-foreground/95 flex items-center justify-center"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
           >
-            <X size={32} />
-          </button>
-          
-          <button
-            onClick={prevImage}
-            className="absolute left-6 text-background/70 hover:text-background transition-colors"
-            aria-label="Previous"
-          >
-            <ChevronLeft size={48} />
-          </button>
+            <motion.button
+              onClick={closeLightbox}
+              className="absolute top-6 right-6 text-background/70 hover:text-background transition-colors"
+              aria-label="Close"
+              whileHover={{ scale: 1.1, rotate: 90 }}
+              transition={{ duration: 0.3 }}
+            >
+              <X size={32} />
+            </motion.button>
+            
+            <motion.button
+              onClick={prevImage}
+              className="absolute left-6 text-background/70 hover:text-background transition-colors"
+              aria-label="Previous"
+              whileHover={{ x: -5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronLeft size={48} />
+            </motion.button>
 
-          <div className="max-w-5xl max-h-[85vh] px-16">
-            <img
-              src={lookbookImages[selectedImage].src}
-              alt={lookbookImages[selectedImage].title}
-              className="max-w-full max-h-[85vh] object-contain"
-            />
-            <div className="text-center mt-6">
-              <p className="text-xs tracking-[0.2em] uppercase text-background/50 mb-1">
-                {lookbookImages[selectedImage].season}
-              </p>
-              <h3 className="font-display text-2xl text-background">
-                {lookbookImages[selectedImage].title}
-              </h3>
-            </div>
-          </div>
-
-          <button
-            onClick={nextImage}
-            className="absolute right-6 text-background/70 hover:text-background transition-colors"
-            aria-label="Next"
-          >
-            <ChevronRight size={48} />
-          </button>
-
-          {/* Thumbnails */}
-          <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
-            {lookbookImages.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => setSelectedImage(index)}
-                className={cn(
-                  "w-2 h-2 rounded-full transition-all duration-300",
-                  selectedImage === index
-                    ? "bg-background w-8"
-                    : "bg-background/30 hover:bg-background/50"
-                )}
-                aria-label={`Go to image ${index + 1}`}
+            <div className="max-w-5xl max-h-[85vh] px-16">
+              <motion.img
+                key={selectedImage}
+                src={lookbookImages[selectedImage].src}
+                alt={lookbookImages[selectedImage].title}
+                className="max-w-full max-h-[85vh] object-contain"
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.3 }}
               />
-            ))}
-          </div>
-        </div>
-      )}
+              <motion.div
+                className="text-center mt-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.2 }}
+              >
+                <p className="text-xs tracking-[0.2em] uppercase text-background/50 mb-1">
+                  {lookbookImages[selectedImage].season}
+                </p>
+                <h3 className="font-display text-2xl text-background">
+                  {lookbookImages[selectedImage].title}
+                </h3>
+              </motion.div>
+            </div>
+
+            <motion.button
+              onClick={nextImage}
+              className="absolute right-6 text-background/70 hover:text-background transition-colors"
+              aria-label="Next"
+              whileHover={{ x: 5 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronRight size={48} />
+            </motion.button>
+
+            {/* Thumbnails */}
+            <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
+              {lookbookImages.map((_, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => setSelectedImage(index)}
+                  className={cn(
+                    "h-2 rounded-full transition-all duration-300",
+                    selectedImage === index
+                      ? "bg-background w-8"
+                      : "bg-background/30 hover:bg-background/50 w-2"
+                  )}
+                  aria-label={`Go to image ${index + 1}`}
+                  whileHover={{ scale: 1.2 }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 };
