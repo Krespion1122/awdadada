@@ -73,7 +73,7 @@ const Shop = () => {
   return (
     <main className="pt-20 min-h-screen bg-background">
       {/* Hero */}
-      <section className="py-16 lg:py-24 bg-foreground text-background">
+      <section className="py-16 lg:py-24 border-b border-border">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div 
             className="text-center"
@@ -81,13 +81,13 @@ const Shop = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            <p className="text-xs tracking-[0.3em] uppercase text-background/60 mb-4">
+            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
               Kolekcja MISSIL
             </p>
-            <h1 className="font-display text-5xl lg:text-7xl mb-6">
+            <h1 className="font-display text-5xl lg:text-7xl mb-6 text-foreground">
               Sklep
             </h1>
-            <p className="text-background/70 max-w-lg mx-auto text-lg">
+            <p className="text-muted-foreground max-w-lg mx-auto text-lg">
               Ponadczasowe kreacje wykonane z najwyższej jakości materiałów
             </p>
           </motion.div>
