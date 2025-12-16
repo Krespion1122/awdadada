@@ -7,6 +7,9 @@ import { MagneticButton } from "@/components/MagneticButton";
 import { ParallaxImage } from "@/components/ParallaxImage";
 import lookbook1 from "@/assets/lookbook-1.jpg";
 import lookbook2 from "@/assets/lookbook-2.jpg";
+import product1 from "@/assets/product-1.jpg";
+import product2 from "@/assets/product-2.jpg";
+import product3 from "@/assets/product-3.jpg";
 
 const Index = () => {
   return (
@@ -14,17 +17,24 @@ const Index = () => {
       {/* Hero Section with Video Background */}
       <section className="relative h-screen w-full overflow-hidden">
         {/* Video Background */}
-        <div className="absolute inset-0">
+        <div className="absolute inset-0 bg-foreground">
           <video
             autoPlay
             muted
             loop
             playsInline
+            preload="auto"
             className="w-full h-full object-cover"
             poster={lookbook1}
           >
+            {/* Fashion runway video from Pexels */}
             <source
-              src="https://videos.pexels.com/video-files/4620563/4620563-hd_1920_1080_25fps.mp4"
+              src="https://videos.pexels.com/video-files/5699766/5699766-hd_1920_1080_30fps.mp4"
+              type="video/mp4"
+            />
+            {/* Fallback */}
+            <source
+              src="https://videos.pexels.com/video-files/3015510/3015510-hd_1920_1080_24fps.mp4"
               type="video/mp4"
             />
           </video>
@@ -185,42 +195,66 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Brand Statement with parallax */}
-      <section className="py-24 lg:py-32 bg-secondary relative overflow-hidden">
-        <motion.div
-          className="absolute inset-0 opacity-5"
-          style={{
-            backgroundImage: "radial-gradient(circle at 50% 50%, hsl(var(--foreground)) 1px, transparent 1px)",
-            backgroundSize: "50px 50px",
-          }}
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 100%"],
-          }}
-          transition={{
-            duration: 20,
-            repeat: Infinity,
-            repeatType: "reverse",
-          }}
-        />
-        <div className="container mx-auto px-6 lg:px-12 text-center relative z-10">
-          <motion.blockquote
-            className="font-display text-3xl lg:text-4xl xl:text-5xl text-foreground leading-relaxed max-w-4xl mx-auto"
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
+      {/* Featured Products Section - replaces quote */}
+      <section className="py-24 lg:py-32 bg-secondary/50 relative overflow-hidden">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.div
+            className="text-center mb-16"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
           >
-            "Każdy detal ma znaczenie. Każda kreacja opowiada historię."
-          </motion.blockquote>
-          <motion.p
-            className="mt-8 text-xs tracking-[0.2em] uppercase text-muted-foreground"
+            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
+              Wyróżnione
+            </p>
+            <h2 className="font-display text-3xl lg:text-4xl text-foreground">
+              Bestsellery Sezonu
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              { img: product1, name: "Kaszmirowy Sweter", price: "1 890 PLN" },
+              { img: product2, name: "Jedwabna Bluzka", price: "1 290 PLN" },
+              { img: product3, name: "Wełniane Spodnie", price: "1 590 PLN" },
+            ].map((item, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.15 }}
+              >
+                <Link to="/sklep" className="group block">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-4">
+                    <img
+                      src={item.img}
+                      alt={item.name}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  </div>
+                  <h3 className="font-display text-lg text-foreground mb-1">{item.name}</h3>
+                  <p className="text-sm text-muted-foreground">{item.price}</p>
+                </Link>
+              </motion.div>
+            ))}
+          </div>
+
+          <motion.div
+            className="text-center mt-12"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
           >
-            — Filozofia MISSIL
-          </motion.p>
+            <Link to="/sklep">
+              <Button variant="fashion" size="fashion">
+                Zobacz wszystkie produkty
+              </Button>
+            </Link>
+          </motion.div>
         </div>
       </section>
 

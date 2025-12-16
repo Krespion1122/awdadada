@@ -6,16 +6,26 @@ interface SplashScreenProps {
 }
 
 export const SplashScreen = ({ onComplete }: SplashScreenProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(() => {
+    // Check if splash was shown this session
+    const hasShown = sessionStorage.getItem('splash_shown');
+    return !hasShown;
+  });
 
   useEffect(() => {
+    if (!isVisible) {
+      onComplete();
+      return;
+    }
+
     const timer = setTimeout(() => {
       setIsVisible(false);
+      sessionStorage.setItem('splash_shown', 'true');
       setTimeout(onComplete, 800);
     }, 2500);
 
     return () => clearTimeout(timer);
-  }, [onComplete]);
+  }, [onComplete, isVisible]);
 
   const letters = "MISSIL".split("");
 
