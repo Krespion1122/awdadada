@@ -9,14 +9,14 @@ interface FilterOption {
 
 interface ProductFilterProps {
   categories: FilterOption[];
-  colors: FilterOption[];
+  priceRanges: FilterOption[];
   sizes: FilterOption[];
   selectedCategory: string;
-  selectedColor: string;
+  selectedPriceRange: string;
   selectedSize: string;
   searchQuery: string;
   onCategoryChange: (value: string) => void;
-  onColorChange: (value: string) => void;
+  onPriceRangeChange: (value: string) => void;
   onSizeChange: (value: string) => void;
   onSearchChange: (value: string) => void;
 }
@@ -50,25 +50,31 @@ function FilterDropdown({
         />
       </button>
       {isOpen && (
-        <div className="absolute top-full left-0 mt-2 bg-background border border-border shadow-lg z-20 min-w-[150px] animate-fade-in">
-          {options.map((option) => (
-            <button
-              key={option.value}
-              onClick={() => {
-                onChange(option.value);
-                setIsOpen(false);
-              }}
-              className={cn(
-                "block w-full text-left px-4 py-2 text-sm transition-colors duration-200",
-                value === option.value
-                  ? "bg-secondary text-foreground"
-                  : "text-foreground/70 hover:bg-secondary/50"
-              )}
-            >
-              {option.label}
-            </button>
-          ))}
-        </div>
+        <>
+          <div 
+            className="fixed inset-0 z-10" 
+            onClick={() => setIsOpen(false)} 
+          />
+          <div className="absolute top-full left-0 mt-2 bg-background border border-border shadow-lg z-20 min-w-[180px] animate-fade-in">
+            {options.map((option) => (
+              <button
+                key={option.value}
+                onClick={() => {
+                  onChange(option.value);
+                  setIsOpen(false);
+                }}
+                className={cn(
+                  "block w-full text-left px-4 py-2 text-sm transition-colors duration-200",
+                  value === option.value
+                    ? "bg-secondary text-foreground"
+                    : "text-foreground/70 hover:bg-secondary/50"
+                )}
+              >
+                {option.label}
+              </button>
+            ))}
+          </div>
+        </>
       )}
     </div>
   );
@@ -76,14 +82,14 @@ function FilterDropdown({
 
 export function ProductFilter({
   categories,
-  colors,
+  priceRanges,
   sizes,
   selectedCategory,
-  selectedColor,
+  selectedPriceRange,
   selectedSize,
   searchQuery,
   onCategoryChange,
-  onColorChange,
+  onPriceRangeChange,
   onSizeChange,
   onSearchChange,
 }: ProductFilterProps) {
@@ -97,10 +103,10 @@ export function ProductFilter({
           onChange={onCategoryChange}
         />
         <FilterDropdown
-          label="Kolor"
-          options={colors}
-          value={selectedColor}
-          onChange={onColorChange}
+          label="Cena"
+          options={priceRanges}
+          value={selectedPriceRange}
+          onChange={onPriceRangeChange}
         />
         <FilterDropdown
           label="Rozmiar"

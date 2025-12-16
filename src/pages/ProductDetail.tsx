@@ -53,7 +53,7 @@ const ProductDetail = () => {
               {product.name}
             </h1>
             <p className="text-xl text-foreground mb-8">
-              {product.price}
+              {product.priceFormatted}
             </p>
 
             <p className="text-muted-foreground leading-relaxed mb-8">
