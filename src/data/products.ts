@@ -9,9 +9,9 @@ export interface Product {
   id: string;
   name: string;
   category: string;
-  color: string;
   sizes: string[];
-  price: string;
+  price: number;
+  priceFormatted: string;
   description: string;
   images: string[];
 }
@@ -21,9 +21,9 @@ export const products: Product[] = [
     id: "1",
     name: "Kaszmirowy Sweter Essential",
     category: "swetry",
-    color: "czarny",
     sizes: ["XS", "S", "M", "L", "XL"],
-    price: "1 890 PLN",
+    price: 1890,
+    priceFormatted: "1 890 PLN",
     description: "Luksusowy sweter wykonany z najwyższej jakości kaszmiru mongolskiego. Ponadczasowy krój i minimalistyczny design sprawiają, że jest idealnym elementem każdej garderoby.",
     images: [product1],
   },
@@ -31,9 +31,9 @@ export const products: Product[] = [
     id: "2",
     name: "Jedwabna Bluzka Atelier",
     category: "bluzki",
-    color: "biały",
     sizes: ["XS", "S", "M", "L"],
-    price: "1 290 PLN",
+    price: 1290,
+    priceFormatted: "1 290 PLN",
     description: "Elegancka bluzka z włoskiego jedwabiu o delikatnym połysku. Uniwersalny fason idealny zarówno do biura, jak i na wieczorne wyjścia.",
     images: [product2],
   },
@@ -41,9 +41,9 @@ export const products: Product[] = [
     id: "3",
     name: "Wełniane Spodnie Tailored",
     category: "spodnie",
-    color: "czarny",
     sizes: ["34", "36", "38", "40", "42"],
-    price: "1 590 PLN",
+    price: 1590,
+    priceFormatted: "1 590 PLN",
     description: "Klasyczne spodnie z wełny merino włoskiej o prostym kroju. Wysoka talia i idealne proporcje zapewniają wyjątkowy komfort noszenia.",
     images: [product3],
   },
@@ -51,9 +51,9 @@ export const products: Product[] = [
     id: "4",
     name: "Oversized Blazer Cream",
     category: "marynarki",
-    color: "kremowy",
     sizes: ["XS", "S", "M", "L"],
-    price: "2 490 PLN",
+    price: 2490,
+    priceFormatted: "2 490 PLN",
     description: "Oversize'owa marynarka w kolorze ecru wykonana z wysokogatunkowej wełny. Złote guziki dodają elegancji minimalistycznej formie.",
     images: [product4],
   },
@@ -61,9 +61,9 @@ export const products: Product[] = [
     id: "5",
     name: "Skórzana Torebka Minimal",
     category: "akcesoria",
-    color: "czarny",
     sizes: ["ONE SIZE"],
-    price: "2 890 PLN",
+    price: 2890,
+    priceFormatted: "2 890 PLN",
     description: "Ręcznie wykonana torebka z włoskiej skóry cielęcej. Minimalistyczny design i praktyczne wymiary czynią ją idealną na każdą okazję.",
     images: [product5],
   },
@@ -71,9 +71,9 @@ export const products: Product[] = [
     id: "6",
     name: "Wełniany Szal Heritage",
     category: "akcesoria",
-    color: "czarny",
     sizes: ["ONE SIZE"],
-    price: "690 PLN",
+    price: 690,
+    priceFormatted: "690 PLN",
     description: "Miękki szal z wełny jagnięcej o subtelnej fakturze. Frędzle wykonane ręcznie dodają charakteru klasycznej formie.",
     images: [product6],
   },
@@ -88,11 +88,12 @@ export const categories = [
   { value: "akcesoria", label: "Akcesoria" },
 ];
 
-export const colors = [
-  { value: "all", label: "Wszystkie" },
-  { value: "czarny", label: "Czarny" },
-  { value: "biały", label: "Biały" },
-  { value: "kremowy", label: "Kremowy" },
+export const priceRanges = [
+  { value: "all", label: "Wszystkie ceny" },
+  { value: "0-1000", label: "Do 1 000 PLN" },
+  { value: "1000-1500", label: "1 000 - 1 500 PLN" },
+  { value: "1500-2000", label: "1 500 - 2 000 PLN" },
+  { value: "2000+", label: "Powyżej 2 000 PLN" },
 ];
 
 export const sizes = [

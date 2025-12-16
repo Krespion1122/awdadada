@@ -21,9 +21,10 @@ const Index = () => {
             loop
             playsInline
             className="w-full h-full object-cover"
+            poster={lookbook1}
           >
             <source
-              src="https://cdn.coverr.co/videos/coverr-models-on-a-fashion-runway-9364/1080p.mp4"
+              src="https://videos.pexels.com/video-files/4620563/4620563-hd_1920_1080_25fps.mp4"
               type="video/mp4"
             />
           </video>

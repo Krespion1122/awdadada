@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -9,6 +10,7 @@ import { Footer } from "@/components/Footer";
 import { SocialIcons } from "@/components/SocialIcons";
 import { CursorFollower } from "@/components/CursorFollower";
 import { PageTransition } from "@/components/PageTransition";
+import { SplashScreen } from "@/components/SplashScreen";
 import Index from "./pages/Index";
 import Lookbook from "./pages/Lookbook";
 import Shop from "./pages/Shop";
@@ -41,17 +43,28 @@ function AnimatedRoutes() {
   );
 }
 
+function AppContent() {
+  const [showSplash, setShowSplash] = useState(true);
+
+  return (
+    <>
+      {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
+      <CursorFollower />
+      <Navigation />
+      <SocialIcons />
+      <AnimatedRoutes />
+      <Footer />
+    </>
+  );
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
       <Toaster />
       <Sonner />
       <BrowserRouter>
-        <CursorFollower />
-        <Navigation />
-        <SocialIcons />
-        <AnimatedRoutes />
-        <Footer />
+        <AppContent />
       </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>

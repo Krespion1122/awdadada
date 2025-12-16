@@ -1,11 +1,11 @@
 import { useState, useMemo } from "react";
 import { ProductCard } from "@/components/ProductCard";
 import { ProductFilter } from "@/components/ProductFilter";
-import { products, categories, colors, sizes } from "@/data/products";
+import { products, categories, priceRanges, sizes } from "@/data/products";
 
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedColor, setSelectedColor] = useState("all");
+  const [selectedPriceRange, setSelectedPriceRange] = useState("all");
   const [selectedSize, setSelectedSize] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
 
@@ -13,8 +13,20 @@ const Shop = () => {
     return products.filter((product) => {
       const matchesCategory =
         selectedCategory === "all" || product.category === selectedCategory;
-      const matchesColor =
-        selectedColor === "all" || product.color === selectedColor;
+      
+      let matchesPrice = true;
+      if (selectedPriceRange !== "all") {
+        if (selectedPriceRange === "0-1000") {
+          matchesPrice = product.price <= 1000;
+        } else if (selectedPriceRange === "1000-1500") {
+          matchesPrice = product.price > 1000 && product.price <= 1500;
+        } else if (selectedPriceRange === "1500-2000") {
+          matchesPrice = product.price > 1500 && product.price <= 2000;
+        } else if (selectedPriceRange === "2000+") {
+          matchesPrice = product.price > 2000;
+        }
+      }
+
       const matchesSize =
         selectedSize === "all" || product.sizes.includes(selectedSize);
       const matchesSearch =
@@ -22,9 +34,9 @@ const Shop = () => {
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesCategory && matchesColor && matchesSize && matchesSearch;
+      return matchesCategory && matchesPrice && matchesSize && matchesSearch;
     });
-  }, [selectedCategory, selectedColor, selectedSize, searchQuery]);
+  }, [selectedCategory, selectedPriceRange, selectedSize, searchQuery]);
 
   return (
     <main className="pt-20">
@@ -45,14 +57,14 @@ const Shop = () => {
         <div className="container mx-auto px-6 lg:px-12">
           <ProductFilter
             categories={categories}
-            colors={colors}
+            priceRanges={priceRanges}
             sizes={sizes}
             selectedCategory={selectedCategory}
-            selectedColor={selectedColor}
+            selectedPriceRange={selectedPriceRange}
             selectedSize={selectedSize}
             searchQuery={searchQuery}
             onCategoryChange={setSelectedCategory}
-            onColorChange={setSelectedColor}
+            onPriceRangeChange={setSelectedPriceRange}
             onSizeChange={setSelectedSize}
             onSearchChange={setSearchQuery}
           />
@@ -70,7 +82,7 @@ const Shop = () => {
                     name={product.name}
                     category={product.category}
                     image={product.images[0]}
-                    price={product.price}
+                    price={product.priceFormatted}
                   />
                 </div>
               ))}
