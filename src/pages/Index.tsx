@@ -21,20 +21,6 @@ const Index = () => {
       <section className="relative h-screen w-full overflow-hidden">
         {/* Video Background */}
         <div className="absolute inset-0 bg-foreground">
-          {/* Poster layer (prevents refresh flash) */}
-          <div
-            className={`absolute inset-0 transition-opacity duration-700 ${
-              heroVideoReady ? "opacity-0" : "opacity-100"
-            }`}
-          >
-            <img
-              src={lookbook1}
-              alt="MISSIL – filmowy kadr kolekcji"
-              className="w-full h-full object-cover"
-              loading="eager"
-            />
-          </div>
-
           <video
             autoPlay
             muted
@@ -45,7 +31,6 @@ const Index = () => {
             className={`w-full h-full object-cover transition-opacity duration-700 ${
               heroVideoReady ? "opacity-100" : "opacity-0"
             }`}
-            poster={lookbook1}
           >
             <source
               src="https://videos.pexels.com/video-files/5699766/5699766-hd_1920_1080_30fps.mp4"
