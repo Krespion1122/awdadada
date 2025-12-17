@@ -1,7 +1,7 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories, sizes } from "@/data/products";
+import { products, categories } from "@/data/products";
 import { Search, ChevronDown, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
@@ -10,7 +10,6 @@ type SortOption = "newest" | "price-asc" | "price-desc" | "name";
 
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedSize, setSelectedSize] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [priceRange, setPriceRange] = useState([0, 3000]);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
@@ -33,14 +32,12 @@ const Shop = () => {
       
       const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
 
-      const matchesSize =
-        selectedSize === "all" || product.sizes.includes(selectedSize);
       const matchesSearch =
         searchQuery === "" ||
         product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
         product.category.toLowerCase().includes(searchQuery.toLowerCase());
 
-      return matchesCategory && matchesPrice && matchesSize && matchesSearch;
+      return matchesCategory && matchesPrice && matchesSearch;
     });
 
     // Sort
@@ -59,16 +56,15 @@ const Shop = () => {
     }
 
     return result;
-  }, [selectedCategory, priceRange, selectedSize, searchQuery, sortBy]);
+  }, [selectedCategory, priceRange, searchQuery, sortBy]);
 
   const clearFilters = () => {
     setSelectedCategory("all");
-    setSelectedSize("all");
     setPriceRange([0, 3000]);
     setSearchQuery("");
   };
 
-  const hasActiveFilters = selectedCategory !== "all" || selectedSize !== "all" || priceRange[0] !== 0 || priceRange[1] !== 3000;
+  const hasActiveFilters = selectedCategory !== "all" || priceRange[0] !== 0 || priceRange[1] !== 3000;
 
   const letterVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -214,28 +210,6 @@ const Shop = () => {
                   </div>
                 </div>
 
-                {/* Size Filter */}
-                <div className="border-t border-border pt-8">
-                  <h3 className="text-xs tracking-[0.2em] uppercase text-foreground font-medium mb-5">
-                    Rozmiar
-                  </h3>
-                  <div className="grid grid-cols-4 gap-2">
-                    {sizes.map((size) => (
-                      <button
-                        key={size.value}
-                        onClick={() => setSelectedSize(size.value)}
-                        className={cn(
-                          "py-3 text-xs border transition-all duration-200",
-                          selectedSize === size.value
-                            ? "bg-foreground text-background border-foreground"
-                            : "bg-transparent text-muted-foreground border-border hover:border-foreground hover:text-foreground"
-                        )}
-                      >
-                        {size.label === "Wszystkie" ? "All" : size.label}
-                      </button>
-                    ))}
-                  </div>
-                </div>
 
                 {/* Price Range Slider */}
                 <div className="border-t border-border pt-8">

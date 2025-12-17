@@ -1,11 +1,14 @@
+import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft, Info, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/products";
+import { cn } from "@/lib/utils";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === id);
+  const [selectedSize, setSelectedSize] = useState<string | null>(null);
 
   if (!product) {
     return (
@@ -60,21 +63,35 @@ const ProductDetail = () => {
               {product.description}
             </p>
 
-            {/* Sizes */}
+            {/* Sizes - Clickable */}
             <div className="mb-8">
               <p className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">
-                Dostępne rozmiary
+                Wybierz rozmiar
               </p>
-              <div className="flex flex-wrap gap-2">
+              <div className="flex flex-wrap gap-3">
                 {product.sizes.map((size) => (
-                  <span
+                  <button
                     key={size}
-                    className="px-4 py-2 border border-border text-sm text-foreground"
+                    onClick={() => setSelectedSize(size)}
+                    className={cn(
+                      "relative px-5 py-3 border text-sm transition-all duration-200 min-w-[60px]",
+                      selectedSize === size
+                        ? "bg-foreground text-background border-foreground"
+                        : "bg-transparent text-foreground border-border hover:border-foreground"
+                    )}
                   >
                     {size}
-                  </span>
+                    {selectedSize === size && (
+                      <Check size={14} className="absolute top-1 right-1" />
+                    )}
+                  </button>
                 ))}
               </div>
+              {selectedSize && (
+                <p className="text-sm text-muted-foreground mt-3">
+                  Wybrany rozmiar: <span className="text-foreground font-medium">{selectedSize}</span>
+                </p>
+              )}
             </div>
 
             {/* Availability Notice */}
