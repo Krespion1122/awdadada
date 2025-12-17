@@ -148,26 +148,29 @@ const CMS = () => {
   return (
     <main className="pt-20 min-h-screen bg-background">
       {/* Hero */}
-      <section className="py-12 lg:py-16 border-b border-border">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div 
-            className="flex items-center justify-between"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div>
-              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-2">
+      <section className="relative h-[30vh] lg:h-[40vh] overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background z-10" />
+        <motion.div 
+          className="absolute inset-0 bg-[url('/src/assets/lookbook-3.jpg')] bg-cover bg-center"
+          initial={{ scale: 1.1 }}
+          animate={{ scale: 1 }}
+          transition={{ duration: 1.2, ease: "easeOut" }}
+        />
+        <div className="relative z-20 h-full flex items-end">
+          <div className="container mx-auto px-6 lg:px-12 pb-8 lg:pb-12">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8, delay: 0.3 }}
+            >
+              <p className="text-xs tracking-[0.4em] uppercase text-foreground/70 mb-3">
                 Panel administracyjny
               </p>
-              <h1 className="font-display text-3xl lg:text-4xl text-foreground">
+              <h1 className="font-display text-4xl lg:text-6xl text-foreground tracking-tight">
                 CMS Panel
               </h1>
-            </div>
-            <p className="text-muted-foreground text-sm max-w-xs text-right hidden lg:block">
-              Zarządzaj produktami w katalogu
-            </p>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
       </section>
 
