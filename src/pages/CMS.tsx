@@ -151,6 +151,7 @@ const CMS = () => {
       <section className="py-16 lg:py-20 border-b border-border">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
+            className="text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
