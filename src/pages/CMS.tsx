@@ -148,7 +148,7 @@ const CMS = () => {
   return (
     <main className="pt-20 min-h-screen bg-background">
       {/* Hero */}
-      <section className="py-16 lg:py-20 border-b border-border">
+      <section className="py-10 lg:py-12 border-b border-border">
         <div className="container mx-auto px-6 lg:px-12">
           <motion.div
             className="text-center"
