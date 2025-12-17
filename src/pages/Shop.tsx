@@ -78,8 +78,8 @@ const Shop = () => {
           animate={{ scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
         />
-        <div className="relative z-20 h-full flex items-end">
-          <div className="container mx-auto px-6 lg:px-12 pb-8 lg:pb-12">
+        <div className="relative z-20 h-full flex items-center justify-center">
+          <div className="container mx-auto px-6 lg:px-12 text-center">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
