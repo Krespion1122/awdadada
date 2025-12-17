@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const navLinks = [
@@ -71,6 +71,21 @@ export function Navigation() {
                   {link.name}
                 </Link>
               ))}
+              
+              {/* Cart Icon */}
+              <Link
+                to="/koszyk"
+                className={cn(
+                  "p-2 transition-all duration-300 hover:scale-110",
+                  location.pathname === "/koszyk"
+                    ? "opacity-100"
+                    : "opacity-70 hover:opacity-100",
+                  isScrolled || !isHomePage ? "text-foreground" : "text-background"
+                )}
+                aria-label="Koszyk"
+              >
+                <ShoppingBag size={20} />
+              </Link>
             </div>
 
             {/* Mobile Menu Button */}
@@ -110,6 +125,20 @@ export function Navigation() {
               {link.name}
             </Link>
           ))}
+          
+          {/* Cart Link in Mobile Menu */}
+          <Link
+            to="/koszyk"
+            className={cn(
+              "flex items-center gap-3 font-display text-3xl tracking-[0.2em] uppercase text-foreground transition-all duration-300",
+              "opacity-0 translate-y-4",
+              isOpen && "animate-fade-up"
+            )}
+            style={{ animationDelay: `${navLinks.length * 0.1}s` }}
+          >
+            <ShoppingBag size={28} />
+            Koszyk
+          </Link>
         </div>
       </div>
     </>
