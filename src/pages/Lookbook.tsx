@@ -153,19 +153,6 @@ const Lookbook = () => {
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.3 }}
               />
-              <motion.div
-                className="text-center mt-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.2 }}
-              >
-                <p className="text-xs tracking-[0.2em] uppercase text-background/50 mb-1">
-                  {lookbookImages[selectedImage].season}
-                </p>
-                <h3 className="font-display text-2xl text-background">
-                  {lookbookImages[selectedImage].title}
-                </h3>
-              </motion.div>
             </div>
 
             <motion.button
