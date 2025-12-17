@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Menu, X, ShoppingBag } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { CartModal } from "./CartModal";
 
 const navLinks = [
   { name: "Strona główna", path: "/" },
@@ -15,6 +16,7 @@ const navLinks = [
 export function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isCartOpen, setIsCartOpen] = useState(false);
   const location = useLocation();
   const isHomePage = location.pathname === "/";
 
@@ -73,19 +75,16 @@ export function Navigation() {
               ))}
               
               {/* Cart Icon */}
-              <Link
-                to="/koszyk"
+              <button
+                onClick={() => setIsCartOpen(true)}
                 className={cn(
-                  "p-2 transition-all duration-300 hover:scale-110",
-                  location.pathname === "/koszyk"
-                    ? "opacity-100"
-                    : "opacity-70 hover:opacity-100",
+                  "p-2 transition-all duration-300 hover:scale-110 opacity-70 hover:opacity-100",
                   isScrolled || !isHomePage ? "text-foreground" : "text-background"
                 )}
                 aria-label="Koszyk"
               >
                 <ShoppingBag size={20} />
-              </Link>
+              </button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -126,9 +125,9 @@ export function Navigation() {
             </Link>
           ))}
           
-          {/* Cart Link in Mobile Menu */}
-          <Link
-            to="/koszyk"
+          {/* Cart Button in Mobile Menu */}
+          <button
+            onClick={() => { setIsOpen(false); setIsCartOpen(true); }}
             className={cn(
               "flex items-center gap-3 font-display text-3xl tracking-[0.2em] uppercase text-foreground transition-all duration-300",
               "opacity-0 translate-y-4",
@@ -138,9 +137,12 @@ export function Navigation() {
           >
             <ShoppingBag size={28} />
             Koszyk
-          </Link>
+          </button>
         </div>
       </div>
+
+      {/* Cart Modal */}
+      <CartModal isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} />
     </>
   );
 }

@@ -18,7 +18,7 @@ import ProductDetail from "./pages/ProductDetail";
 import About from "./pages/About";
 import Collaboration from "./pages/Collaboration";
 import Contact from "./pages/Contact";
-import Cart from "./pages/Cart";
+
 import CMS from "./pages/CMS";
 import NotFound from "./pages/NotFound";
 
@@ -37,7 +37,7 @@ function AnimatedRoutes() {
         <Route path="/o-marce" element={<PageTransition><About /></PageTransition>} />
         <Route path="/wspolpraca" element={<PageTransition><Collaboration /></PageTransition>} />
         <Route path="/kontakt" element={<PageTransition><Contact /></PageTransition>} />
-        <Route path="/koszyk" element={<PageTransition><Cart /></PageTransition>} />
+        
         <Route path="/cms" element={<PageTransition><CMS /></PageTransition>} />
         <Route path="*" element={<PageTransition><NotFound /></PageTransition>} />
       </Routes>
