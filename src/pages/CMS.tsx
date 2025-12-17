@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { motion, Reorder } from "framer-motion";
 import { Plus, Trash2, Save, Image as ImageIcon, X, Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -326,19 +326,30 @@ const CMS = () => {
                       </Button>
                     </div>
 
-                    {/* Image list with reordering */}
+                    {/* Image list with drag & drop reordering */}
                     {formData.images.length > 0 ? (
-                      <div className="space-y-2">
+                      <Reorder.Group 
+                        axis="y" 
+                        values={formData.images} 
+                        onReorder={(newOrder) => setFormData(prev => ({ ...prev, images: newOrder }))}
+                        className="space-y-2"
+                      >
                         {formData.images.map((img, index) => (
-                          <div 
-                            key={index} 
-                            className="flex items-center gap-3 p-3 bg-secondary/30 border border-border"
+                          <Reorder.Item 
+                            key={img} 
+                            value={img}
+                            className="flex items-center gap-3 p-3 bg-secondary/30 border border-border cursor-grab active:cursor-grabbing"
+                            whileDrag={{ 
+                              scale: 1.02, 
+                              boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
+                              backgroundColor: "hsl(var(--secondary))"
+                            }}
                           >
-                            <div className="text-muted-foreground">
+                            <div className="text-muted-foreground hover:text-foreground transition-colors">
                               <GripVertical size={18} />
                             </div>
                             
-                            <div className="w-16 h-16 bg-secondary flex-shrink-0 overflow-hidden">
+                            <div className="w-16 h-16 bg-secondary flex-shrink-0 overflow-hidden pointer-events-none">
                               <img 
                                 src={img} 
                                 alt={`Zdjęcie ${index + 1}`}
@@ -350,7 +361,7 @@ const CMS = () => {
                               />
                             </div>
                             
-                            <div className="flex-1 min-w-0">
+                            <div className="flex-1 min-w-0 pointer-events-none">
                               <p className="text-sm text-foreground font-medium">
                                 {index === 0 ? "Główne zdjęcie" : `Zdjęcie ${index + 1}`}
                               </p>
@@ -363,7 +374,7 @@ const CMS = () => {
                             <div className="flex flex-col gap-1">
                               <button
                                 type="button"
-                                onClick={() => moveImageUp(index)}
+                                onClick={(e) => { e.stopPropagation(); moveImageUp(index); }}
                                 disabled={index === 0}
                                 className={cn(
                                   "p-1 transition-colors",
@@ -376,7 +387,7 @@ const CMS = () => {
                               </button>
                               <button
                                 type="button"
-                                onClick={() => moveImageDown(index)}
+                                onClick={(e) => { e.stopPropagation(); moveImageDown(index); }}
                                 disabled={index === formData.images.length - 1}
                                 className={cn(
                                   "p-1 transition-colors",
@@ -392,14 +403,14 @@ const CMS = () => {
                             {/* Delete button */}
                             <button
                               type="button"
-                              onClick={() => removeImage(index)}
+                              onClick={(e) => { e.stopPropagation(); removeImage(index); }}
                               className="p-2 text-muted-foreground hover:text-destructive transition-colors"
                             >
                               <Trash2 size={16} />
                             </button>
-                          </div>
+                          </Reorder.Item>
                         ))}
-                      </div>
+                      </Reorder.Group>
                     ) : (
                       <div className="text-center py-8 border border-dashed border-border">
                         <ImageIcon size={32} className="mx-auto text-muted-foreground/50 mb-2" />
@@ -410,7 +421,7 @@ const CMS = () => {
                     )}
 
                     <p className="text-xs text-muted-foreground mt-2">
-                      Pierwsze zdjęcie będzie wyświetlane jako główne na liście produktów
+                      Przeciągnij zdjęcia aby zmienić kolejność. Pierwsze zdjęcie będzie główne.
                     </p>
                   </div>
 
