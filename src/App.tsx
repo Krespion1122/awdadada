@@ -47,13 +47,17 @@ function AnimatedRoutes() {
 
 function AppContent() {
   const [showSplash, setShowSplash] = useState(true);
+  const location = useLocation();
+  
+  // Hide social icons on CMS page
+  const hideSocialIcons = location.pathname === "/cms";
 
   return (
     <>
       {showSplash && <SplashScreen onComplete={() => setShowSplash(false)} />}
       <CursorFollower />
       <Navigation />
-      <SocialIcons />
+      {!hideSocialIcons && <SocialIcons />}
       <AnimatedRoutes />
       <Footer />
     </>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Plus, Trash2, Save, Image as ImageIcon, X, Package } from "lucide-react";
+import { Plus, Trash2, Save, Image as ImageIcon, X, Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -15,7 +15,7 @@ interface CMSProduct {
   sizes: string[];
   price: string;
   description: string;
-  imageUrl: string;
+  images: string[];
 }
 
 const availableSizes = ["XS", "S", "M", "L", "XL", "34", "36", "38", "40", "42", "ONE SIZE"];
@@ -31,8 +31,10 @@ const CMS = () => {
     sizes: [],
     price: "",
     description: "",
-    imageUrl: "",
+    images: [],
   });
+
+  const [newImageUrl, setNewImageUrl] = useState("");
 
   const resetForm = () => {
     setFormData({
@@ -41,8 +43,9 @@ const CMS = () => {
       sizes: [],
       price: "",
       description: "",
-      imageUrl: "",
+      images: [],
     });
+    setNewImageUrl("");
     setEditingProduct(null);
   };
 
@@ -51,6 +54,11 @@ const CMS = () => {
     
     if (!formData.name || !formData.category || !formData.price) {
       toast.error("Wypełnij wymagane pola: nazwa, kategoria, cena");
+      return;
+    }
+
+    if (formData.images.length === 0) {
+      toast.error("Dodaj przynajmniej jedno zdjęcie");
       return;
     }
 
@@ -79,7 +87,7 @@ const CMS = () => {
       sizes: product.sizes,
       price: product.price,
       description: product.description,
-      imageUrl: product.imageUrl,
+      images: product.images,
     });
     setEditingProduct(product);
     setShowForm(true);
@@ -97,6 +105,44 @@ const CMS = () => {
         ? prev.sizes.filter(s => s !== size)
         : [...prev.sizes, size]
     }));
+  };
+
+  // Image management
+  const addImage = () => {
+    if (!newImageUrl.trim()) {
+      toast.error("Wprowadź URL zdjęcia");
+      return;
+    }
+    setFormData(prev => ({
+      ...prev,
+      images: [...prev.images, newImageUrl.trim()]
+    }));
+    setNewImageUrl("");
+  };
+
+  const removeImage = (index: number) => {
+    setFormData(prev => ({
+      ...prev,
+      images: prev.images.filter((_, i) => i !== index)
+    }));
+  };
+
+  const moveImageUp = (index: number) => {
+    if (index === 0) return;
+    setFormData(prev => {
+      const newImages = [...prev.images];
+      [newImages[index - 1], newImages[index]] = [newImages[index], newImages[index - 1]];
+      return { ...prev, images: newImages };
+    });
+  };
+
+  const moveImageDown = (index: number) => {
+    if (index === formData.images.length - 1) return;
+    setFormData(prev => {
+      const newImages = [...prev.images];
+      [newImages[index], newImages[index + 1]] = [newImages[index + 1], newImages[index]];
+      return { ...prev, images: newImages };
+    });
   };
 
   return (
@@ -153,7 +199,7 @@ const CMS = () => {
                 initial={{ scale: 0.95, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
               >
-                <div className="p-6 border-b border-border flex items-center justify-between">
+                <div className="p-6 border-b border-border flex items-center justify-between sticky top-0 bg-background z-10">
                   <h3 className="font-display text-xl">
                     {editingProduct ? "Edytuj produkt" : "Nowy produkt"}
                   </h3>
@@ -254,27 +300,118 @@ const CMS = () => {
                     />
                   </div>
 
-                  {/* Image URL */}
+                  {/* Images - Multiple with Reordering */}
                   <div>
                     <label className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-2 block">
-                      URL zdjęcia
+                      Zdjęcia produktu * ({formData.images.length})
                     </label>
-                    <Input
-                      value={formData.imageUrl}
-                      onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
-                      placeholder="https://..."
-                      className="bg-secondary/50 border-border"
-                    />
-                    {formData.imageUrl && (
-                      <div className="mt-3 aspect-[3/4] w-32 bg-secondary overflow-hidden">
-                        <img 
-                          src={formData.imageUrl} 
-                          alt="Preview" 
-                          className="w-full h-full object-cover"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
-                        />
+                    
+                    {/* Add new image */}
+                    <div className="flex gap-2 mb-4">
+                      <Input
+                        value={newImageUrl}
+                        onChange={(e) => setNewImageUrl(e.target.value)}
+                        placeholder="Wklej URL zdjęcia..."
+                        className="bg-secondary/50 border-border flex-1"
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            addImage();
+                          }
+                        }}
+                      />
+                      <Button type="button" variant="outline" onClick={addImage} className="gap-2">
+                        <Plus size={16} />
+                        Dodaj
+                      </Button>
+                    </div>
+
+                    {/* Image list with reordering */}
+                    {formData.images.length > 0 ? (
+                      <div className="space-y-2">
+                        {formData.images.map((img, index) => (
+                          <div 
+                            key={index} 
+                            className="flex items-center gap-3 p-3 bg-secondary/30 border border-border"
+                          >
+                            <div className="text-muted-foreground">
+                              <GripVertical size={18} />
+                            </div>
+                            
+                            <div className="w-16 h-16 bg-secondary flex-shrink-0 overflow-hidden">
+                              <img 
+                                src={img} 
+                                alt={`Zdjęcie ${index + 1}`}
+                                className="w-full h-full object-cover"
+                                onError={(e) => { 
+                                  (e.target as HTMLImageElement).src = ''; 
+                                  (e.target as HTMLImageElement).style.display = 'none';
+                                }}
+                              />
+                            </div>
+                            
+                            <div className="flex-1 min-w-0">
+                              <p className="text-sm text-foreground font-medium">
+                                {index === 0 ? "Główne zdjęcie" : `Zdjęcie ${index + 1}`}
+                              </p>
+                              <p className="text-xs text-muted-foreground truncate">
+                                {img}
+                              </p>
+                            </div>
+
+                            {/* Reorder buttons */}
+                            <div className="flex flex-col gap-1">
+                              <button
+                                type="button"
+                                onClick={() => moveImageUp(index)}
+                                disabled={index === 0}
+                                className={cn(
+                                  "p-1 transition-colors",
+                                  index === 0 
+                                    ? "text-muted-foreground/30 cursor-not-allowed" 
+                                    : "text-muted-foreground hover:text-foreground"
+                                )}
+                              >
+                                <ChevronUp size={16} />
+                              </button>
+                              <button
+                                type="button"
+                                onClick={() => moveImageDown(index)}
+                                disabled={index === formData.images.length - 1}
+                                className={cn(
+                                  "p-1 transition-colors",
+                                  index === formData.images.length - 1 
+                                    ? "text-muted-foreground/30 cursor-not-allowed" 
+                                    : "text-muted-foreground hover:text-foreground"
+                                )}
+                              >
+                                <ChevronDown size={16} />
+                              </button>
+                            </div>
+
+                            {/* Delete button */}
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="p-2 text-muted-foreground hover:text-destructive transition-colors"
+                            >
+                              <Trash2 size={16} />
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <div className="text-center py-8 border border-dashed border-border">
+                        <ImageIcon size={32} className="mx-auto text-muted-foreground/50 mb-2" />
+                        <p className="text-sm text-muted-foreground">
+                          Dodaj zdjęcia produktu
+                        </p>
                       </div>
                     )}
+
+                    <p className="text-xs text-muted-foreground mt-2">
+                      Pierwsze zdjęcie będzie wyświetlane jako główne na liście produktów
+                    </p>
                   </div>
 
                   {/* Submit */}
@@ -322,12 +459,19 @@ const CMS = () => {
                 >
                   {/* Image */}
                   <div className="aspect-[3/4] bg-secondary relative">
-                    {product.imageUrl ? (
-                      <img 
-                        src={product.imageUrl} 
-                        alt={product.name}
-                        className="w-full h-full object-cover"
-                      />
+                    {product.images.length > 0 ? (
+                      <>
+                        <img 
+                          src={product.images[0]} 
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                        {product.images.length > 1 && (
+                          <div className="absolute bottom-2 right-2 px-2 py-1 bg-foreground/80 text-background text-xs">
+                            +{product.images.length - 1} zdjęć
+                          </div>
+                        )}
+                      </>
                     ) : (
                       <div className="w-full h-full flex items-center justify-center">
                         <ImageIcon size={48} className="text-muted-foreground/30" />

@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { ArrowLeft, Info, Check } from "lucide-react";
+import { ArrowLeft, Info, Check, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { products } from "@/data/products";
 import { cn } from "@/lib/utils";
+import { motion, AnimatePresence } from "framer-motion";
 
 const ProductDetail = () => {
   const { id } = useParams();
   const product = products.find((p) => p.id === id);
   const [selectedSize, setSelectedSize] = useState<string | null>(null);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
 
   if (!product) {
     return (
@@ -22,6 +24,20 @@ const ProductDetail = () => {
       </main>
     );
   }
+
+  const hasMultipleImages = product.images.length > 1;
+
+  const nextImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === product.images.length - 1 ? 0 : prev + 1
+    );
+  };
+
+  const prevImage = () => {
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? product.images.length - 1 : prev - 1
+    );
+  };
 
   return (
     <main className="pt-20">
@@ -38,13 +54,70 @@ const ProductDetail = () => {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           {/* Image Gallery */}
           <div className="space-y-4">
-            <div className="aspect-[3/4] bg-secondary overflow-hidden">
-              <img
-                src={product.images[0]}
-                alt={product.name}
-                className="w-full h-full object-cover"
-              />
+            {/* Main Image */}
+            <div className="aspect-[3/4] bg-secondary overflow-hidden relative group">
+              <AnimatePresence mode="wait">
+                <motion.img
+                  key={currentImageIndex}
+                  src={product.images[currentImageIndex]}
+                  alt={`${product.name} - zdjęcie ${currentImageIndex + 1}`}
+                  className="w-full h-full object-cover"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </AnimatePresence>
+
+              {/* Navigation arrows */}
+              {hasMultipleImages && (
+                <>
+                  <button
+                    onClick={prevImage}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-background/80 hover:bg-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label="Poprzednie zdjęcie"
+                  >
+                    <ChevronLeft size={20} />
+                  </button>
+                  <button
+                    onClick={nextImage}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 bg-background/80 hover:bg-background flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity"
+                    aria-label="Następne zdjęcie"
+                  >
+                    <ChevronRight size={20} />
+                  </button>
+
+                  {/* Image counter */}
+                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 px-3 py-1 bg-foreground/80 text-background text-sm">
+                    {currentImageIndex + 1} / {product.images.length}
+                  </div>
+                </>
+              )}
             </div>
+
+            {/* Thumbnails */}
+            {hasMultipleImages && (
+              <div className="flex gap-2 overflow-x-auto pb-2">
+                {product.images.map((img, index) => (
+                  <button
+                    key={index}
+                    onClick={() => setCurrentImageIndex(index)}
+                    className={cn(
+                      "w-20 h-24 flex-shrink-0 overflow-hidden border-2 transition-colors",
+                      currentImageIndex === index
+                        ? "border-foreground"
+                        : "border-transparent hover:border-muted-foreground/50"
+                    )}
+                  >
+                    <img
+                      src={img}
+                      alt={`${product.name} - miniatura ${index + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Product Info */}
