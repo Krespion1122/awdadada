@@ -66,103 +66,30 @@ const Shop = () => {
 
   const hasActiveFilters = selectedCategory !== "all" || priceRange[0] !== 0 || priceRange[1] !== 3000;
 
-  const letterVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: (i: number) => ({
-      opacity: 1,
-      y: 0,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.6,
-        ease: "easeOut" as const
-      }
-    })
-  };
-
-  const shopLetters = "SKLEP".split("");
 
   return (
     <main className="pt-20 min-h-screen bg-background">
       {/* Hero */}
-      <section className="py-20 lg:py-32 border-b border-border relative overflow-hidden">
-        {/* Decorative elements */}
-        <div className="absolute inset-0 pointer-events-none">
-          <motion.div 
-            className="absolute top-1/4 left-10 w-px h-32 bg-gradient-to-b from-transparent via-foreground/20 to-transparent"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 1, delay: 0.5 }}
-          />
-          <motion.div 
-            className="absolute top-1/3 right-16 w-px h-48 bg-gradient-to-b from-transparent via-foreground/10 to-transparent"
-            initial={{ scaleY: 0 }}
-            animate={{ scaleY: 1 }}
-            transition={{ duration: 1.2, delay: 0.7 }}
-          />
-          <motion.div 
-            className="absolute bottom-1/4 left-1/4 w-24 h-px bg-gradient-to-r from-transparent via-foreground/15 to-transparent"
-            initial={{ scaleX: 0 }}
-            animate={{ scaleX: 1 }}
-            transition={{ duration: 1, delay: 0.9 }}
-          />
-          <motion.div 
-            className="absolute top-1/2 right-1/3 w-2 h-2 border border-foreground/20 rotate-45"
-            initial={{ opacity: 0, scale: 0 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 1.2 }}
-          />
-        </div>
-
-        <div className="container mx-auto px-6 lg:px-12 relative">
-          <div className="text-center">
-            <motion.p 
-              className="text-xs tracking-[0.4em] uppercase text-muted-foreground mb-8"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-            >
-              Kolekcja MISSIL
-            </motion.p>
-            
-            {/* Animated title */}
-            <div className="overflow-hidden mb-8">
-              <h1 className="font-display text-6xl lg:text-9xl text-foreground flex justify-center gap-1 lg:gap-3">
-                {shopLetters.map((letter, i) => (
-                  <motion.span
-                    key={i}
-                    custom={i}
-                    variants={letterVariants}
-                    initial="hidden"
-                    animate="visible"
-                    className="inline-block hover:text-muted-foreground transition-colors duration-300"
-                  >
-                    {letter}
-                  </motion.span>
-                ))}
+      <section className="py-12 lg:py-16 border-b border-border">
+        <div className="container mx-auto px-6 lg:px-12">
+          <motion.div
+            className="flex items-center justify-between"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+          >
+            <div>
+              <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-2">
+                Kolekcja MISSIL
+              </p>
+              <h1 className="font-display text-3xl lg:text-4xl text-foreground">
+                Sklep
               </h1>
             </div>
-
-            {/* Decorative line */}
-            <motion.div 
-              className="flex items-center justify-center gap-4 mb-8"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              <span className="w-12 h-px bg-foreground/30" />
-              <span className="w-1.5 h-1.5 bg-foreground/50 rotate-45" />
-              <span className="w-12 h-px bg-foreground/30" />
-            </motion.div>
-            
-            <motion.p 
-              className="text-muted-foreground max-w-md mx-auto text-lg lg:text-xl font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-            >
+            <p className="text-muted-foreground text-sm max-w-xs text-right hidden lg:block">
               Ponadczasowe kreacje wykonane z najwyższej jakości materiałów
-            </motion.p>
-          </div>
+            </p>
+          </motion.div>
         </div>
       </section>
 
