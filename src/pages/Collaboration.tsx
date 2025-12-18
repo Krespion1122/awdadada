@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { Handshake, Store, Sparkles, Newspaper, Send, ArrowRight, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
@@ -421,24 +422,24 @@ const Collaboration = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                variant="outline" 
+                variant="fashion" 
                 size="fashion" 
-                className="border-background text-background hover:bg-background hover:text-foreground group"
+                className="bg-background text-foreground hover:bg-background/90 group"
                 asChild
               >
-                <a href="/contact">
+                <Link to="/kontakt">
                   <span>Kontakt ogólny</span>
                   <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </a>
+                </Link>
               </Button>
               <Button 
                 variant="outline" 
                 size="fashion" 
-                className="border-background/30 text-background/80 hover:border-background hover:text-background"
+                className="border-background/50 text-background hover:bg-background/10 hover:border-background"
                 asChild
               >
-                <a href="mailto:partnership@atelier.pl">
-                  partnership@atelier.pl
+                <a href="mailto:partnership@missil.pl">
+                  partnership@missil.pl
                 </a>
               </Button>
             </div>

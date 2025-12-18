@@ -108,7 +108,7 @@ const About = () => {
               <div className="aspect-[4/5] overflow-hidden">
                 <img
                   src={aboutImage}
-                  alt="ATELIER Showroom"
+                  alt="MISSIL Showroom"
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -146,7 +146,7 @@ const About = () => {
               
               <div className="space-y-6 text-muted-foreground leading-relaxed mb-10">
                 <p>
-                  ATELIER to polska marka odzieżowa założona w 2015 roku, która łączy 
+                  MISSIL to polska marka odzieżowa założona w 2015 roku, która łączy 
                   tradycyjne rzemiosło krawieckie z nowoczesnym, minimalistycznym designem. 
                   Tworzymy ubrania dla osób, które cenią sobie jakość, autentyczność i 
                   ponadczasowy styl.
@@ -224,89 +224,6 @@ const About = () => {
         </div>
       </section>
 
-      {/* Timeline Section */}
-      <section className="py-20 lg:py-32 bg-background overflow-hidden">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="text-center mb-16"
-          >
-            <p className="text-xs tracking-[0.3em] uppercase text-muted-foreground mb-4">
-              Nasza droga
-            </p>
-            <h2 className="font-display text-3xl lg:text-5xl text-foreground">
-              Kamienie milowe
-            </h2>
-          </motion.div>
-
-          {/* Timeline */}
-          <div className="relative">
-            {/* Center line */}
-            <div className="absolute left-4 lg:left-1/2 top-0 bottom-0 w-px bg-border lg:-translate-x-1/2" />
-            
-            <div className="space-y-12 lg:space-y-0">
-              {milestones.map((milestone, index) => (
-                <motion.div
-                  key={milestone.year}
-                  initial={{ opacity: 0, x: index % 2 === 0 ? -30 : 30 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: index * 0.1 }}
-                  className={`relative flex items-center lg:justify-center ${
-                    index % 2 === 0 ? 'lg:flex-row' : 'lg:flex-row-reverse'
-                  }`}
-                >
-                  {/* Dot */}
-                  <div className="absolute left-4 lg:left-1/2 w-3 h-3 bg-fashion-gold rounded-full lg:-translate-x-1/2 z-10" />
-                  
-                  {/* Content */}
-                  <div className={`ml-12 lg:ml-0 lg:w-1/2 ${
-                    index % 2 === 0 ? 'lg:pr-16 lg:text-right' : 'lg:pl-16 lg:text-left'
-                  }`}>
-                    <div className="bg-secondary/50 border border-border/50 p-6 inline-block">
-                      <span className="font-display text-3xl text-fashion-gold">{milestone.year}</span>
-                      <h4 className="font-display text-xl text-foreground mt-2">{milestone.title}</h4>
-                      <p className="text-muted-foreground text-sm mt-1">{milestone.description}</p>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Quote Section */}
-      <section className="relative h-[70vh] overflow-hidden">
-        <ParallaxImage
-          src={lookbook4}
-          alt="ATELIER Fashion"
-          className="w-full h-full"
-          speed={0.3}
-        />
-        <div className="absolute inset-0 bg-foreground/60" />
-        <div className="absolute inset-0 flex items-center justify-center">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.9 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.8 }}
-            className="text-center px-6"
-          >
-            <div className="w-16 h-px bg-fashion-gold mx-auto mb-8" />
-            <blockquote className="font-display text-3xl lg:text-5xl text-background max-w-3xl mx-auto leading-relaxed">
-              "Moda przemija, styl pozostaje na zawsze."
-            </blockquote>
-            <p className="text-background/70 mt-6 text-sm tracking-[0.2em] uppercase">
-              — Coco Chanel
-            </p>
-            <div className="w-16 h-px bg-fashion-gold mx-auto mt-8" />
-          </motion.div>
-        </div>
-      </section>
 
       {/* Atelier Section */}
       <section className="py-20 lg:py-32 bg-background">
@@ -334,7 +251,7 @@ const About = () => {
                 <p>
                   Nasze atelier mieści się w sercu Warszawy, gdzie zespół doświadczonych 
                   krawców i projektantów pracuje nad kolejnymi kolekcjami. Każdy element 
-                  garderoby ATELIER to wyraz naszej pasji do mody i zaangażowania 
+                  garderoby MISSIL to wyraz naszej pasji do mody i zaangażowania 
                   w tworzenie ubrań, które przetrwają próbę czasu.
                 </p>
                 <p>
@@ -346,7 +263,7 @@ const About = () => {
               <div className="flex items-start gap-4 p-6 bg-secondary/50 border-l-2 border-fashion-gold">
                 <MapPin size={24} className="text-fashion-gold flex-shrink-0" />
                 <div>
-                  <h4 className="text-foreground font-medium mb-1">Showroom ATELIER</h4>
+                  <h4 className="text-foreground font-medium mb-1">Showroom MISSIL</h4>
                   <p className="text-muted-foreground text-sm">
                     ul. Mokotowska 12, 00-561 Warszawa
                   </p>
@@ -452,14 +369,14 @@ const About = () => {
               Odkryj nasze kolekcje
             </h2>
             <p className="text-background/70 mb-10 max-w-xl mx-auto">
-              Poznaj unikalne kreacje ATELIER i znajdź ubrania, które idealnie 
+              Poznaj unikalne kreacje MISSIL i znajdź ubrania, które idealnie 
               podkreślą Twój indywidualny styl.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button 
-                variant="outline" 
+                variant="fashion" 
                 size="fashion" 
-                className="border-background text-background hover:bg-background hover:text-foreground group"
+                className="bg-background text-foreground hover:bg-background/90 group"
                 asChild
               >
                 <Link to="/sklep">
@@ -470,7 +387,7 @@ const About = () => {
               <Button 
                 variant="outline" 
                 size="fashion" 
-                className="border-background/30 text-background/80 hover:border-background hover:text-background"
+                className="border-background/50 text-background hover:bg-background/10 hover:border-background"
                 asChild
               >
                 <Link to="/lookbook">
