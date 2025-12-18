@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -11,9 +11,25 @@ import lookbook2 from "@/assets/lookbook-2.jpg";
 import product1 from "@/assets/product-1.jpg";
 import product2 from "@/assets/product-2.jpg";
 import product3 from "@/assets/product-3.jpg";
+import { getCMSProductsFromStorage } from "@/hooks/useCMSProducts";
 
 const Index = () => {
   const [heroVideoReady, setHeroVideoReady] = useState(false);
+
+  // Get bestsellers from CMS
+  const cmsBestsellers = useMemo(() => {
+    const cmsProducts = getCMSProductsFromStorage();
+    return cmsProducts.filter(p => p.isBestseller).slice(0, 3);
+  }, []);
+
+  // Fallback products if no CMS bestsellers
+  const defaultBestsellers = [
+    { img: product1, name: "Kaszmirowy Sweter", price: "1 890 PLN", id: "1" },
+    { img: product2, name: "Jedwabna Bluzka", price: "1 290 PLN", id: "2" },
+    { img: product3, name: "Wełniane Spodnie", price: "1 590 PLN", id: "3" },
+  ];
+
+  const hasCMSBestsellers = cmsBestsellers.length > 0;
 
   return (
     <main>
@@ -215,32 +231,53 @@ const Index = () => {
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              { img: product1, name: "Kaszmirowy Sweter", price: "1 890 PLN" },
-              { img: product2, name: "Jedwabna Bluzka", price: "1 290 PLN" },
-              { img: product3, name: "Wełniane Spodnie", price: "1 590 PLN" },
-            ].map((item, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.15 }}
-              >
-                <Link to="/sklep" className="group block">
-                  <div className="relative aspect-[3/4] overflow-hidden mb-4">
-                    <img
-                      src={item.img}
-                      alt={item.name}
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  </div>
-                  <h3 className="font-display text-lg text-foreground mb-1">{item.name}</h3>
-                  <p className="text-sm text-muted-foreground">{item.price}</p>
-                </Link>
-              </motion.div>
-            ))}
+            {hasCMSBestsellers ? (
+              cmsBestsellers.map((product, index) => (
+                <motion.div
+                  key={product.id}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                >
+                  <Link to={`/produkt/${product.id}`} className="group block">
+                    <div className="relative aspect-[3/4] overflow-hidden mb-4">
+                      <img
+                        src={product.images[0]}
+                        alt={product.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <h3 className="font-display text-lg text-foreground mb-1">{product.name}</h3>
+                    <p className="text-sm text-muted-foreground">{product.price}</p>
+                  </Link>
+                </motion.div>
+              ))
+            ) : (
+              defaultBestsellers.map((item, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.15 }}
+                >
+                  <Link to={`/produkt/${item.id}`} className="group block">
+                    <div className="relative aspect-[3/4] overflow-hidden mb-4">
+                      <img
+                        src={item.img}
+                        alt={item.name}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-foreground/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    </div>
+                    <h3 className="font-display text-lg text-foreground mb-1">{item.name}</h3>
+                    <p className="text-sm text-muted-foreground">{item.price}</p>
+                  </Link>
+                </motion.div>
+              ))
+            )}
           </div>
 
           <motion.div
