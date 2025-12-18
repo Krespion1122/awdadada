@@ -233,19 +233,6 @@ const ProductPreviewModal = ({ isOpen, onClose, product }: ProductPreviewModalPr
               <Button variant="fashion" size="fashion" className="w-full rounded-xl">
                 Zapytaj o dostępność w butikach
               </Button>
-
-              {/* Product Details */}
-              <div className="mt-8 pt-6 border-t border-border">
-                <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3">
-                  Szczegóły produktu
-                </h3>
-                <ul className="space-y-1.5 text-sm text-muted-foreground">
-                  <li>• Najwyższa jakość materiałów</li>
-                  <li>• Ręczne wykonanie</li>
-                  <li>• Wyprodukowano we Włoszech</li>
-                  <li>• Profesjonalne pranie chemiczne</li>
-                </ul>
-              </div>
             </div>
           </div>
         </div>
