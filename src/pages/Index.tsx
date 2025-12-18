@@ -71,27 +71,25 @@ const Index = () => {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 1.5 }}
           >
-            <MagneticButton>
-              <Link to="/lookbook">
-                <Button variant="fashion-white-outline" size="fashion" className="group relative overflow-hidden">
-                  <span className="relative z-10">Zobacz więcej</span>
-                  <motion.div
-                    className="absolute inset-0 bg-background"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  />
-                  <motion.span
-                    className="absolute inset-0 flex items-center justify-center text-foreground z-20"
-                    initial={{ x: "-100%" }}
-                    whileHover={{ x: 0 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    Zobacz więcej
-                  </motion.span>
-                </Button>
-              </Link>
-            </MagneticButton>
+            <Link to="/lookbook">
+              <Button variant="fashion-white-outline" size="fashion" className="group relative overflow-hidden">
+                <span className="relative z-10">Zobacz więcej</span>
+                <motion.div
+                  className="absolute inset-0 bg-background"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+                <motion.span
+                  className="absolute inset-0 flex items-center justify-center text-foreground z-20"
+                  initial={{ x: "-100%" }}
+                  whileHover={{ x: 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  Zobacz więcej
+                </motion.span>
+              </Button>
+            </Link>
           </motion.div>
         </div>
 
