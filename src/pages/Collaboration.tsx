@@ -400,52 +400,6 @@ const Collaboration = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="py-20 lg:py-32 bg-foreground text-background">
-        <div className="container mx-auto px-6 lg:px-12">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="max-w-3xl mx-auto text-center"
-          >
-            <p className="text-xs tracking-[0.3em] uppercase text-background/60 mb-4">
-              Masz pytania?
-            </p>
-            <h2 className="font-display text-3xl lg:text-5xl mb-6">
-              Porozmawiajmy o możliwościach
-            </h2>
-            <p className="text-background/70 mb-10 max-w-xl mx-auto">
-              Jeśli masz dodatkowe pytania lub chciałbyś omówić szczegóły 
-              potencjalnej współpracy, skontaktuj się z nami bezpośrednio.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                variant="fashion" 
-                size="fashion" 
-                className="bg-background text-foreground hover:bg-background/90 group"
-                asChild
-              >
-                <Link to="/kontakt">
-                  <span>Kontakt ogólny</span>
-                  <ArrowRight size={16} className="ml-2 group-hover:translate-x-1 transition-transform" />
-                </Link>
-              </Button>
-              <Button 
-                variant="outline" 
-                size="fashion" 
-                className="border-background/50 text-background hover:bg-background/10 hover:border-background"
-                asChild
-              >
-                <a href="mailto:partnership@missil.pl">
-                  partnership@missil.pl
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
-      </section>
     </main>
   );
 };

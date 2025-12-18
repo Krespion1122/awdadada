@@ -55,7 +55,7 @@ const Index = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
-            Kolekcja Jesień/Zima 2024
+            Kolekcja Jesień/Zima 2025
           </motion.p>
 
           <h1 className="font-display text-5xl md:text-7xl lg:text-9xl text-background tracking-wide mb-6">
