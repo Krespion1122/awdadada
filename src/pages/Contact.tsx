@@ -54,7 +54,7 @@ const Contact = () => {
     {
       icon: Mail,
       title: "E-mail",
-      content: ["kontakt@atelier.pl"],
+      content: ["kontakt@missil.pl"],
     },
     {
       icon: Clock,

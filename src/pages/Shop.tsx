@@ -5,6 +5,7 @@ import { products, categories } from "@/data/products";
 import { Search, ChevronDown, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
+import shopHero from "@/assets/shop-hero.jpg";
 
 type SortOption = "newest" | "price-asc" | "price-desc" | "name";
 
@@ -73,7 +74,8 @@ const Shop = () => {
       <section className="relative h-[30vh] lg:h-[40vh] overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-b from-background/40 via-background/60 to-background z-10" />
         <motion.div 
-          className="absolute inset-0 bg-[url('/src/assets/lookbook-2.jpg')] bg-cover bg-center"
+          className="absolute inset-0 bg-cover bg-center"
+          style={{ backgroundImage: `url(${shopHero})` }}
           initial={{ scale: 1.1 }}
           animate={{ scale: 1 }}
           transition={{ duration: 1.2, ease: "easeOut" }}
@@ -86,7 +88,7 @@ const Shop = () => {
               transition={{ duration: 0.8, delay: 0.3 }}
             >
               <p className="text-xs tracking-[0.4em] uppercase text-foreground/70 mb-3">
-                Kolekcja 2024
+                Kolekcja 2025
               </p>
               <h1 className="font-display text-4xl lg:text-6xl text-foreground tracking-tight">
                 Sklep

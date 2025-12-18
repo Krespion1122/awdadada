@@ -58,7 +58,7 @@ export function Footer() {
 
         <div className="border-t border-background/10 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
           <p className="text-xs text-background/50">
-            © 2024 MISSIL. Wszystkie prawa zastrzeżone.
+            © {new Date().getFullYear()} MISSIL. Wszystkie prawa zastrzeżone.
           </p>
           <div className="flex gap-6 text-xs text-background/50">
             <Link to="/polityka-prywatnosci" className="hover:text-background transition-colors">
