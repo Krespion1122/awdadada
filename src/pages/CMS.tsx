@@ -8,6 +8,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
 import { useCMSProducts, CMSProduct } from "@/hooks/useCMSProducts";
+import ProductPreviewModal from "@/components/ProductPreviewModal";
 
 const availableSizes = ["XS", "S", "M", "L", "XL", "34", "36", "38", "40", "42", "ONE SIZE"];
 
@@ -15,6 +16,7 @@ const CMS = () => {
   const { products: cmsProducts, addProduct, updateProduct, deleteProduct, getCategories } = useCMSProducts();
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<CMSProduct | null>(null);
+  const [previewProduct, setPreviewProduct] = useState<CMSProduct | typeof formData | null>(null);
   
   const [formData, setFormData] = useState<Omit<CMSProduct, "id">>({
     name: "",
@@ -581,15 +583,24 @@ const CMS = () => {
                     </button>
                   </div>
 
-                  {/* Submit */}
+                  {/* Preview & Submit */}
                   <div className="flex gap-3 pt-4">
                     <Button 
                       type="button" 
                       variant="outline" 
                       onClick={() => { setShowForm(false); resetForm(); }}
-                      className="flex-1 h-12 rounded-xl border-border/50"
+                      className="h-12 px-6 rounded-xl border-border/50"
                     >
                       Anuluj
+                    </Button>
+                    <Button 
+                      type="button" 
+                      variant="outline" 
+                      onClick={() => setPreviewProduct({ ...formData, id: editingProduct?.id })}
+                      className="h-12 px-6 rounded-xl border-fashion-gold/50 text-fashion-gold hover:bg-fashion-gold/10 gap-2"
+                    >
+                      <Eye size={18} />
+                      Podgląd
                     </Button>
                     <Button type="submit" variant="fashion" className="flex-1 h-12 rounded-xl gap-2 shadow-lg shadow-fashion-gold/20">
                       <Save size={18} />
@@ -723,6 +734,15 @@ const CMS = () => {
                       <Button 
                         variant="outline" 
                         size="sm" 
+                        onClick={() => setPreviewProduct(product)}
+                        className="h-9 w-9 p-0 rounded-lg border-fashion-gold/50 text-fashion-gold hover:bg-fashion-gold/10"
+                        title="Podgląd"
+                      >
+                        <Eye size={14} />
+                      </Button>
+                      <Button 
+                        variant="outline" 
+                        size="sm" 
                         onClick={() => handleEdit(product)}
                         className="flex-1 h-9 rounded-lg border-border/50 hover:bg-fashion-gold/10 hover:border-fashion-gold/50 hover:text-foreground gap-1.5"
                       >
@@ -766,6 +786,13 @@ const CMS = () => {
           </motion.div>
         </div>
       </section>
+
+      {/* Product Preview Modal */}
+      <ProductPreviewModal
+        isOpen={!!previewProduct}
+        onClose={() => setPreviewProduct(null)}
+        product={previewProduct || { name: "", category: "", price: "", description: "", images: [], sizes: [] }}
+      />
     </main>
   );
 };
