@@ -190,18 +190,6 @@ const ProductDetail = () => {
               </Button>
             </Link>
 
-            {/* Product Details */}
-            <div className="mt-12 pt-8 border-t border-border">
-              <h3 className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-4">
-                Szczegóły produktu
-              </h3>
-              <ul className="space-y-2 text-sm text-muted-foreground">
-                <li>• Najwyższa jakość materiałów</li>
-                <li>• Ręczne wykonanie</li>
-                <li>• Wyprodukowano we Włoszech</li>
-                <li>• Profesjonalne pranie chemiczne</li>
-              </ul>
-            </div>
           </div>
         </div>
       </div>
