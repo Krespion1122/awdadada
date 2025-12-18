@@ -1,6 +1,7 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { motion, Reorder } from "framer-motion";
-import { Plus, Trash2, Save, Image as ImageIcon, X, Package, GripVertical, ChevronUp, ChevronDown } from "lucide-react";
+import { Plus, Trash2, Save, Image as ImageIcon, X, Package, GripVertical, ChevronUp, ChevronDown, Star, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +17,7 @@ interface CMSProduct {
   price: string;
   description: string;
   images: string[];
+  isBestseller: boolean;
 }
 
 const availableSizes = ["XS", "S", "M", "L", "XL", "34", "36", "38", "40", "42", "ONE SIZE"];
@@ -32,6 +34,7 @@ const CMS = () => {
     price: "",
     description: "",
     images: [],
+    isBestseller: false,
   });
 
   const [newImageUrl, setNewImageUrl] = useState("");
@@ -44,6 +47,7 @@ const CMS = () => {
       price: "",
       description: "",
       images: [],
+      isBestseller: false,
     });
     setNewImageUrl("");
     setEditingProduct(null);
@@ -88,6 +92,7 @@ const CMS = () => {
       price: product.price,
       description: product.description,
       images: product.images,
+      isBestseller: product.isBestseller,
     });
     setEditingProduct(product);
     setShowForm(true);
@@ -422,6 +427,34 @@ const CMS = () => {
                     </p>
                   </div>
 
+                  {/* Bestseller Toggle */}
+                  <div>
+                    <label className="text-xs tracking-[0.2em] uppercase text-muted-foreground mb-3 block">
+                      Wyróżnienie
+                    </label>
+                    <button
+                      type="button"
+                      onClick={() => setFormData(prev => ({ ...prev, isBestseller: !prev.isBestseller }))}
+                      className={cn(
+                        "flex items-center gap-3 px-4 py-3 border transition-colors w-full",
+                        formData.isBestseller
+                          ? "bg-fashion-gold/20 border-fashion-gold text-foreground"
+                          : "bg-transparent border-border text-muted-foreground hover:border-foreground"
+                      )}
+                    >
+                      <Star 
+                        size={20} 
+                        className={cn(
+                          "transition-colors",
+                          formData.isBestseller ? "fill-fashion-gold text-fashion-gold" : ""
+                        )} 
+                      />
+                      <span className="text-sm">
+                        {formData.isBestseller ? "Produkt wyróżniony jako bestseller" : "Oznacz jako bestseller na stronie głównej"}
+                      </span>
+                    </button>
+                  </div>
+
                   {/* Submit */}
                   <div className="flex gap-4 pt-4">
                     <Button 
@@ -466,32 +499,50 @@ const CMS = () => {
                   transition={{ delay: index * 0.1 }}
                 >
                   {/* Image */}
-                  <div className="aspect-[3/4] bg-secondary relative">
-                    {product.images.length > 0 ? (
-                      <>
-                        <img 
-                          src={product.images[0]} 
-                          alt={product.name}
-                          className="w-full h-full object-cover"
-                        />
-                        {product.images.length > 1 && (
-                          <div className="absolute bottom-2 right-2 px-2 py-1 bg-foreground/80 text-background text-xs">
-                            +{product.images.length - 1} zdjęć
-                          </div>
-                        )}
-                      </>
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center">
-                        <ImageIcon size={48} className="text-muted-foreground/30" />
-                      </div>
-                    )}
-                  </div>
+                  <Link to={`/produkt/${product.id}`} className="block">
+                    <div className="aspect-[3/4] bg-secondary relative">
+                      {product.images.length > 0 ? (
+                        <>
+                          <img 
+                            src={product.images[0]} 
+                            alt={product.name}
+                            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                          />
+                          {product.images.length > 1 && (
+                            <div className="absolute bottom-2 right-2 px-2 py-1 bg-foreground/80 text-background text-xs">
+                              +{product.images.length - 1} zdjęć
+                            </div>
+                          )}
+                        </>
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center">
+                          <ImageIcon size={48} className="text-muted-foreground/30" />
+                        </div>
+                      )}
+                      {/* Bestseller Badge */}
+                      {product.isBestseller && (
+                        <div className="absolute top-2 left-2 px-2 py-1 bg-fashion-gold text-foreground text-xs flex items-center gap-1">
+                          <Star size={12} className="fill-current" />
+                          Bestseller
+                        </div>
+                      )}
+                    </div>
+                  </Link>
 
                   {/* Info */}
                   <div className="p-4">
-                    <p className="text-xs tracking-[0.1em] uppercase text-muted-foreground mb-1">
-                      {categories.find(c => c.value === product.category)?.label || product.category}
-                    </p>
+                    <div className="flex items-start justify-between gap-2 mb-1">
+                      <p className="text-xs tracking-[0.1em] uppercase text-muted-foreground">
+                        {categories.find(c => c.value === product.category)?.label || product.category}
+                      </p>
+                      <Link 
+                        to={`/produkt/${product.id}`}
+                        className="text-muted-foreground hover:text-foreground transition-colors"
+                        title="Zobacz stronę produktu"
+                      >
+                        <ExternalLink size={14} />
+                      </Link>
+                    </div>
                     <h3 className="font-medium text-foreground mb-1 truncate">
                       {product.name}
                     </h3>
