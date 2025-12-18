@@ -7,23 +7,12 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
-import { categories } from "@/data/products";
-
-interface CMSProduct {
-  id: string;
-  name: string;
-  category: string;
-  sizes: string[];
-  price: string;
-  description: string;
-  images: string[];
-  isBestseller: boolean;
-}
+import { useCMSProducts, CMSProduct } from "@/hooks/useCMSProducts";
 
 const availableSizes = ["XS", "S", "M", "L", "XL", "34", "36", "38", "40", "42", "ONE SIZE"];
 
 const CMS = () => {
-  const [cmsProducts, setCmsProducts] = useState<CMSProduct[]>([]);
+  const { products: cmsProducts, addProduct, updateProduct, deleteProduct, getCategories } = useCMSProducts();
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<CMSProduct | null>(null);
   
@@ -53,6 +42,9 @@ const CMS = () => {
     setEditingProduct(null);
   };
 
+  // Get existing categories from products for suggestions
+  const existingCategories = getCategories();
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -67,16 +59,10 @@ const CMS = () => {
     }
 
     if (editingProduct) {
-      setCmsProducts(prev => 
-        prev.map(p => p.id === editingProduct.id ? { ...formData, id: editingProduct.id } : p)
-      );
+      updateProduct(editingProduct.id, formData);
       toast.success("Produkt zaktualizowany");
     } else {
-      const newProduct: CMSProduct = {
-        ...formData,
-        id: Date.now().toString(),
-      };
-      setCmsProducts(prev => [...prev, newProduct]);
+      addProduct(formData);
       toast.success("Produkt dodany");
     }
     
@@ -99,7 +85,7 @@ const CMS = () => {
   };
 
   const handleDelete = (id: string) => {
-    setCmsProducts(prev => prev.filter(p => p.id !== id));
+    deleteProduct(id);
     toast.success("Produkt usunięty");
   };
 
@@ -247,7 +233,7 @@ const CMS = () => {
             >
               <div className="flex items-center justify-center gap-2 mb-1">
                 <Sparkles className="w-4 h-4 text-muted-foreground" />
-                <span className="text-2xl font-display text-foreground">{categories.length - 1}</span>
+                <span className="text-2xl font-display text-foreground">{existingCategories.length}</span>
               </div>
               <p className="text-xs tracking-wider uppercase text-muted-foreground">Kategorii</p>
             </motion.div>
@@ -339,23 +325,34 @@ const CMS = () => {
                       <span className="w-1.5 h-1.5 rounded-full bg-fashion-gold" />
                       Kategoria *
                     </label>
-                    <div className="flex flex-wrap gap-2">
-                      {categories.filter(c => c.value !== "all").map((cat) => (
-                        <button
-                          key={cat.value}
-                          type="button"
-                          onClick={() => setFormData(prev => ({ ...prev, category: cat.value }))}
-                          className={cn(
-                            "px-5 py-2.5 text-sm rounded-xl border transition-all duration-300",
-                            formData.category === cat.value
-                              ? "bg-foreground text-background border-foreground shadow-lg"
-                              : "bg-secondary/30 text-muted-foreground border-border/50 hover:border-foreground/50 hover:bg-secondary/50"
-                          )}
-                        >
-                          {cat.label}
-                        </button>
-                      ))}
-                    </div>
+                    <Input
+                      value={formData.category}
+                      onChange={(e) => setFormData(prev => ({ ...prev, category: e.target.value }))}
+                      placeholder="np. Sukienki, Spodnie, Akcesoria..."
+                      className="bg-secondary/30 border-border/50 h-12 rounded-xl focus:border-fashion-gold/50 focus:ring-fashion-gold/20 transition-all"
+                    />
+                    {existingCategories.length > 0 && (
+                      <div className="space-y-2">
+                        <p className="text-xs text-muted-foreground">Istniejące kategorie:</p>
+                        <div className="flex flex-wrap gap-2">
+                          {existingCategories.map((cat) => (
+                            <button
+                              key={cat}
+                              type="button"
+                              onClick={() => setFormData(prev => ({ ...prev, category: cat }))}
+                              className={cn(
+                                "px-4 py-2 text-sm rounded-xl border transition-all duration-300 capitalize",
+                                formData.category.toLowerCase() === cat
+                                  ? "bg-foreground text-background border-foreground shadow-lg"
+                                  : "bg-secondary/30 text-muted-foreground border-border/50 hover:border-foreground/50 hover:bg-secondary/50"
+                              )}
+                            >
+                              {cat}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
                   </div>
 
                   {/* Price */}
@@ -688,8 +685,8 @@ const CMS = () => {
                   {/* Info */}
                   <div className="p-5">
                     <div className="flex items-start justify-between gap-2 mb-2">
-                      <p className="text-[10px] tracking-[0.15em] uppercase text-fashion-gold font-medium">
-                        {categories.find(c => c.value === product.category)?.label || product.category}
+                      <p className="text-[10px] tracking-[0.15em] uppercase text-fashion-gold font-medium capitalize">
+                        {product.category}
                       </p>
                       <Link 
                         to={`/produkt/${product.id}`}
@@ -761,8 +758,8 @@ const CMS = () => {
               <div>
                 <h4 className="text-sm font-medium text-foreground mb-1">Informacja</h4>
                 <p className="text-sm text-muted-foreground">
-                  Produkty dodane w tym panelu są zapisywane tylko w pamięci przeglądarki i zostaną utracone po odświeżeniu strony. 
-                  Aby trwale zapisywać produkty, należy połączyć panel z bazą danych.
+                  Produkty są zapisywane w pamięci przeglądarki (localStorage). Będą dostępne po odświeżeniu strony.
+                  Kategorie wpisane w produktach automatycznie pojawiają się w filtrach sklepu.
                 </p>
               </div>
             </div>

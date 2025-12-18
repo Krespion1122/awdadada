@@ -1,23 +1,25 @@
 import { useState, useMemo } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 import { ProductCard } from "@/components/ProductCard";
-import { products, categories } from "@/data/products";
+import { products as staticProducts, categories as defaultCategories } from "@/data/products";
 import { Search, ChevronDown, ArrowUpDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Slider } from "@/components/ui/slider";
 import shopHero from "@/assets/shop-hero.jpg";
+import { getCMSProductsFromStorage } from "@/hooks/useCMSProducts";
 
 type SortOption = "newest" | "price-asc" | "price-desc" | "name";
 
 const Shop = () => {
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState([0, 3000]);
+  const [priceRange, setPriceRange] = useState([0, 5000]);
   const [sortBy, setSortBy] = useState<SortOption>("newest");
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
   const minPrice = 0;
-  const maxPrice = 3000;
+  const maxPrice = 5000;
 
   const sortOptions: { value: SortOption; label: string }[] = [
     { value: "newest", label: "Najnowsze" },
@@ -26,8 +28,45 @@ const Shop = () => {
     { value: "name", label: "Alfabetycznie" },
   ];
 
+  // Combine static products with CMS products
+  const cmsProducts = getCMSProductsFromStorage();
+  
+  // Create dynamic categories from CMS products
+  const categories = useMemo(() => {
+    const cmsCategories = new Set(cmsProducts.map(p => p.category.toLowerCase().trim()));
+    const dynamicCategories = Array.from(cmsCategories)
+      .filter(Boolean)
+      .map(cat => ({ value: cat, label: cat.charAt(0).toUpperCase() + cat.slice(1) }));
+    
+    // Merge with default categories, avoiding duplicates
+    const allCategories = [...defaultCategories];
+    dynamicCategories.forEach(dc => {
+      if (!allCategories.some(c => c.value === dc.value)) {
+        allCategories.push(dc);
+      }
+    });
+    return allCategories;
+  }, [cmsProducts]);
+
+  // Combine all products for display
+  const allProducts = useMemo(() => {
+    // Convert CMS products to display format
+    const formattedCMSProducts = cmsProducts.map(p => ({
+      id: p.id,
+      name: p.name,
+      category: p.category.toLowerCase().trim(),
+      sizes: p.sizes,
+      price: parseInt(p.price.replace(/\D/g, '')) || 0,
+      priceFormatted: p.price,
+      description: p.description,
+      images: p.images,
+    }));
+    
+    return [...formattedCMSProducts, ...staticProducts];
+  }, [cmsProducts]);
+
   const filteredProducts = useMemo(() => {
-    let result = products.filter((product) => {
+    let result = allProducts.filter((product) => {
       const matchesCategory =
         selectedCategory === "all" || product.category === selectedCategory;
       
@@ -57,15 +96,15 @@ const Shop = () => {
     }
 
     return result;
-  }, [selectedCategory, priceRange, searchQuery, sortBy]);
+  }, [selectedCategory, priceRange, searchQuery, sortBy, allProducts]);
 
   const clearFilters = () => {
     setSelectedCategory("all");
-    setPriceRange([0, 3000]);
+    setPriceRange([0, 5000]);
     setSearchQuery("");
   };
 
-  const hasActiveFilters = selectedCategory !== "all" || priceRange[0] !== 0 || priceRange[1] !== 3000;
+  const hasActiveFilters = selectedCategory !== "all" || priceRange[0] !== 0 || priceRange[1] !== 5000;
 
 
   return (
